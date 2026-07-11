@@ -26,7 +26,10 @@
 #' #get the names of the ORFs
 #' #grouped by transcript
 #' cds <- GenomicFeatures::cdsBy(txdb, use.names=TRUE)
-#' orfCoord <- cds[names(cds) %in% names(listReadsCodon)]
+#' matches <- match(gsub("\\\\..*$", "", names(cds)), gsub("\\\\..*$", "", names(listReadsCodon)))
+#' matched_idx <- which(!is.na(matches))
+#' orfCoord <- cds[matched_idx]
+#' names(orfCoord) <- names(listReadsCodon)[matches[matched_idx]]
 #'
 #' #get the genome, please check that the genome has the same seqlevels
 #' genomeSeq <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
@@ -89,7 +92,7 @@ codonInfo <-
         )
     #I launch with labels only on the the first sequence, to get the patterns
     testCodonUsage <- Biostrings::oligonucleotideFrequency(
-        cdsSeqs[[1]],
+        Biostrings::DNAString(paste(rep("A", motifSize), collapse="")),
         width=motifSize,
         step=stepSize
     )

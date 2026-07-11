@@ -41,7 +41,10 @@ txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
 #get the names of the ORFs
 #grouped by transcript
 cds <- GenomicFeatures::cdsBy(txdb, use.names=TRUE)
-orfCoord <- cds[names(cds) \%in\% names(listReadsCodon)]
+matches <- match(gsub("\\..*$", "", names(cds)), gsub("\\..*$", "", names(listReadsCodon)))
+matched_idx <- which(!is.na(matches))
+orfCoord <- cds[matched_idx]
+names(orfCoord) <- names(listReadsCodon)[matches[matched_idx]]
 
 #get the genome, please check that the genome has the same seqlevels
 genomeSeq <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
