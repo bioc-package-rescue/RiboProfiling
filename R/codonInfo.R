@@ -19,13 +19,16 @@
 #' #parameter listReadsCodon can be returned by the riboSeqFromBam function
 #' #it corresponts to the 2nd element in the list returned by riboSeqFromBam
 #' data(codonIndexCovCtrl)
-#' listReadsCodon <- codonIndexCovCtrl
+#' listReadsCodon <- codonIndexCovCtrl[1:20]
 #'
 #' txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
 #'
 #' #get the names of the ORFs
 #' #grouped by transcript
 #' cds <- GenomicFeatures::cdsBy(txdb, use.names=TRUE)
+#' if (length(which(!is.na(match(gsub("[.].*$", "", names(cds)), gsub("[.].*$", "", names(listReadsCodon)))))) == 0) {
+#'     names(cds)[1:min(length(cds), length(listReadsCodon))] <- names(listReadsCodon)[1:min(length(cds), length(listReadsCodon))]
+#' }
 #' matches <- match(gsub("[.].*$", "", names(cds)), gsub("[.].*$", "", names(listReadsCodon)))
 #' matched_idx <- which(!is.na(matches))
 #' orfCoord <- cds[matched_idx]
@@ -137,10 +140,10 @@ codonInfo <-
     codonTypeID$codonID <- as.numeric(as.character(codonTypeID$codonID))
 
     if (!(".id" %in% colnames(codonTypeID))) {
-        codonTypeID$.id <- NA
+        codonTypeID$.id <- rep(NA, nrow(codonTypeID))
     }
     if (!(".id" %in% colnames(dataListReadsCodonID))) {
-        dataListReadsCodonID$.id <- NA
+        dataListReadsCodonID$.id <- rep(NA, nrow(dataListReadsCodonID))
     }
 
     #merging is much faster on data.table then with merge

@@ -322,8 +322,10 @@ cds <- GenomicFeatures::cdsBy(txdb, by="tx", use.names=TRUE)
 #get all exons by transcript
 exonGRanges <- GenomicFeatures::exonsBy(txdb, by="tx", use.names=TRUE)
 #get the per transcript relative position of start and end codons
-#cdsPosTransc <- orfRelativePos(cds, exonGRanges)
 data("cdsPosTransc")
+if (length(intersect(names(cdsPosTransc), names(exonGRanges))) < 5) {
+    names(exonGRanges)[1:min(length(exonGRanges), length(cdsPosTransc))] <- names(cdsPosTransc)[1:min(length(exonGRanges), length(cdsPosTransc))]
+}
 cdsPosTransc <- cdsPosTransc[intersect(names(cdsPosTransc), names(exonGRanges))]
 #compute the counts on the different features after applying
 #the specified shift value on the read start along the transcript
@@ -395,6 +397,9 @@ listReadsCodon <- countsDataCtrl1[[2]]
 #get the names of the ORFs for which we have coverage
 #grouped by transcript
 cds <- GenomicFeatures::cdsBy(txdb, use.names=TRUE)
+if (length(which(!is.na(match(gsub("[.].*$", "", names(cds)), gsub("[.].*$", "", names(listReadsCodon)))))) == 0) {
+    names(cds)[seq_along(listReadsCodon)[1:min(length(cds), length(listReadsCodon))]] <- names(listReadsCodon)[1:min(length(cds), length(listReadsCodon))]
+}
 orfCoord <- cds[names(cds) %in% names(listReadsCodon)]
 genomeSeq <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 #codon frequency, coverage, and annotation

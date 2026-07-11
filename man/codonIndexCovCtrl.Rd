@@ -4,7 +4,9 @@
 \name{codonIndexCovCtrl}
 \alias{codonIndexCovCtrl}
 \title{The read coverage for each codon in ORFs on chromosome 1, for dataset ctrlGAlignments}
-\format{A list of 2 columns dataframes.}
+\format{
+A list of 2 columns dataframes.
+}
 \usage{
 data(codonIndexCovCtrl)
 }
@@ -16,4 +18,3 @@ A list containing the number of reads for each codon in each ORF.
 Codons are reported on their index in the ORF and no information is available about their type/sequence.
 }
 \keyword{datasets}
-

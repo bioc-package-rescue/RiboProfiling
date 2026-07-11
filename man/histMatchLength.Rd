@@ -33,4 +33,3 @@ matchLenDistr <- histMatchLength(aln, 0)
 #to plot the histogram
 matchLenDistr[[2]]
 }
-
