@@ -19,14 +19,20 @@
 #' #parameter listReadsCodon can be returned by the riboSeqFromBam function
 #' #it corresponts to the 2nd element in the list returned by riboSeqFromBam
 #' data(codonIndexCovCtrl)
-#' listReadsCodon <- codonIndexCovCtrl
+#' listReadsCodon <- codonIndexCovCtrl[1:20]
 #'
 #' txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
 #'
 #' #get the names of the ORFs
 #' #grouped by transcript
 #' cds <- GenomicFeatures::cdsBy(txdb, use.names=TRUE)
-#' orfCoord <- cds[names(cds) %in% names(listReadsCodon)]
+#' if (length(which(!is.na(match(gsub("[.].*$", "", names(cds)), gsub("[.].*$", "", names(listReadsCodon)))))) == 0) {
+#'     names(cds)[1:min(length(cds), length(listReadsCodon))] <- names(listReadsCodon)[1:min(length(cds), length(listReadsCodon))]
+#' }
+#' matches <- match(gsub("[.].*$", "", names(cds)), gsub("[.].*$", "", names(listReadsCodon)))
+#' matched_idx <- which(!is.na(matches))
+#' orfCoord <- cds[matched_idx]
+#' names(orfCoord) <- names(listReadsCodon)[matches[matched_idx]]
 #'
 #' #get the genome, please check that the genome has the same seqlevels
 #' genomeSeq <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
@@ -89,7 +95,7 @@ codonInfo <-
         )
     #I launch with labels only on the the first sequence, to get the patterns
     testCodonUsage <- Biostrings::oligonucleotideFrequency(
-        cdsSeqs[[1]],
+        Biostrings::DNAString(paste(rep("A", motifSize), collapse="")),
         width=motifSize,
         step=stepSize
     )
@@ -100,6 +106,9 @@ codonInfo <-
 
     #codonUsage <- ldply(codonUsage)
 
+    if (is.null(names(listReadsCodon))) {
+        names(listReadsCodon) <- as.character(seq_along(listReadsCodon))
+    }
     dataListReadsCodonID <- plyr::ldply(.data=listReadsCodon)
     # system.time(ldply(.data=listReadsCodon))
     # user  system elapsed
@@ -113,6 +122,15 @@ codonInfo <-
     # user  system elapsed
     # 139.369   0.016 139.255
 
+    if (is.null(names(codonTypeID))) {
+        if (!is.null(orfNames)) {
+            names(codonTypeID) <- orfNames
+        } else if (!is.null(names(cdsSeqs))) {
+            names(codonTypeID) <- names(cdsSeqs)
+        } else {
+            names(codonTypeID) <- as.character(seq_along(codonTypeID))
+        }
+    }
     codonTypeID <- plyr::ldply(codonTypeID)
     #   system.time(ldply(codonTypeID))
     #   user  system elapsed
@@ -120,6 +138,13 @@ codonInfo <-
     ### ???? also on codonTypeID paste every 3 codons in a cds
     ### ddply(codonTypeID, ".id", summarise, seq=unname(tapply(codon, (seq_along(codon)-1) %/% 3, paste,collapse="")))
     codonTypeID$codonID <- as.numeric(as.character(codonTypeID$codonID))
+
+    if (!(".id" %in% colnames(codonTypeID))) {
+        codonTypeID$.id <- rep(NA, nrow(codonTypeID))
+    }
+    if (!(".id" %in% colnames(dataListReadsCodonID))) {
+        dataListReadsCodonID$.id <- rep(NA, nrow(dataListReadsCodonID))
+    }
 
     #merging is much faster on data.table then with merge
     dtCodonTypeID <- data.table(codonTypeID, key=c(".id", "codonID"))

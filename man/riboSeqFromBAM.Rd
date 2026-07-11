@@ -5,8 +5,16 @@
 \title{Starting from a BAM file path: quality plots, shift ribosome position,
 coverage on multiple transcript features and on codons.}
 \usage{
-riboSeqFromBAM(listeInputBamFile, paramScanBAM, genomeName, txdb,
-  percBestExpressed, flankSize, offsetStartEnd, listShiftValue)
+riboSeqFromBAM(
+  listeInputBamFile,
+  paramScanBAM,
+  genomeName,
+  txdb,
+  percBestExpressed,
+  flankSize,
+  offsetStartEnd,
+  listShiftValue
+)
 }
 \arguments{
 \item{listeInputBamFile}{A character path or a vector of paths to the
@@ -66,4 +74,3 @@ listeInputBam <- c(myFile)
 #in UCSC and your BAM correspond: the "chr" particle
 covData <- riboSeqFromBAM(listeInputBam, txdb=txdb, listShiftValue=c(-14))
 }
-

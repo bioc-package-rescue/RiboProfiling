@@ -48,4 +48,3 @@ listPCACodonCoverage <- codonPCA(codonCovMatrixTransp,"codonCoverage")
 print(listPCACodonCoverage[[2]])
 #See aditional examples in the pdf manual
 }
-

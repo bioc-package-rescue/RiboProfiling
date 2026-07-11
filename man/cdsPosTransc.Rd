@@ -4,7 +4,9 @@
 \name{cdsPosTransc}
 \alias{cdsPosTransc}
 \title{Per transcript relative position of start and end codons for dataset ctrlGAlignments}
-\format{A list}
+\format{
+A list
+}
 \usage{
 data(cdsPosTransc)
 }
@@ -15,4 +17,3 @@ A list
 A list of start and end codons relative to transcript
 }
 \keyword{datasets}
-

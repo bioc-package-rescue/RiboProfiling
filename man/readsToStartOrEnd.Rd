@@ -28,4 +28,3 @@ aln <- ctrlGAlignments
 #transform the GAlignments object into a GRanges object (faster processing)
 alnGRanges <- readsToStartOrEnd(aln, what = "end")
 }
-

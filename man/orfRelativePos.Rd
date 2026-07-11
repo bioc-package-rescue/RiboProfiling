@@ -34,4 +34,3 @@ exonGRanges <- GenomicFeatures::exonsBy(txdb, by="tx", use.names=TRUE)
 #retrieve the positions of start and end codons relative to the transcript
 cdsPosTransc <- orfRelativePos(cds, exonGRanges)
 }
-

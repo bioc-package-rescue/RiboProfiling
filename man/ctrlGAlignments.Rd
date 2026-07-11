@@ -4,7 +4,9 @@
 \name{ctrlGAlignments}
 \alias{ctrlGAlignments}
 \title{Ribosome profiling data on chr1 in human primary BJ fibroblasts control data: PMID: 23594524.}
-\format{A GAlignments object with 3,504,859 reads.}
+\format{
+A GAlignments object with 3,504,859 reads.
+}
 \usage{
 data(ctrlGAlignments)
 }
@@ -16,4 +18,3 @@ A dataset containing the alignment information on chromosome 1 from the control 
 The data object is a GAlignments object containing 3,504,859 hg19 mapped reads.
 }
 \keyword{datasets}
-

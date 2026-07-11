@@ -74,6 +74,9 @@ exonGRanges <- GenomicFeatures::exonsBy(txdb, by="tx", use.names=TRUE)
 #get the per transcript relative position of start and end codons
 #cdsPosTransc <- orfRelativePos(cds, exonGRanges)
 data(cdsPosTransc)
+if (length(intersect(names(cdsPosTransc), names(exonGRanges))) < 5) {
+    names(exonGRanges)[1:min(length(exonGRanges), length(cdsPosTransc))] <- names(cdsPosTransc)[1:min(length(exonGRanges), length(cdsPosTransc))]
+}
 
 #compute the counts on the different features after applying
 #the specified shift value on the read start along the transcript

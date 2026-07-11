@@ -4,7 +4,9 @@
 \name{codonDataCtrl}
 \alias{codonDataCtrl}
 \title{Codon frequency and coverage in ORFs on chromosome 1, for dataset ctrlGAlignments}
-\format{A list of 2 lists.}
+\format{
+A list of 2 lists.
+}
 \usage{
 data(codonDataCtrl)
 }
@@ -17,4 +19,3 @@ one with the number of times each codon type is found in each ORF and
 one with the number of reads for each codon type in each ORF.
 }
 \keyword{datasets}
-

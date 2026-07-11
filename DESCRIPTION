@@ -2,10 +2,9 @@ Package: RiboProfiling
 Type: Package
 Title: Ribosome Profiling Data Analysis: from BAM to Data
         Representation and Interpretation
-Version: 1.43.0
+Version: 1.43.4
 Date: 2025-07-31
-Author: Alexandra Popa
-Maintainer: A. Popa <alexandra.mariela.popa@gmail.com>
+Authors@R: person("Alexandra", "Popa", email = "alexandra.mariela.popa@gmail.com", role = c("aut", "cre"))
 Description: Starting with a BAM file, this package provides the
     necessary functions for quality assessment, read start position
     recalibration, the counting of reads on CDS, 3'UTR, and 5'UTR,
@@ -24,5 +23,5 @@ LazyLoad: yes
 License: GPL-3
 VignetteBuilder: knitr
 NeedsCompilation: no
-RoxygenNote: 7.3.2
 PackageStatus: Deprecated
+Config/roxygen2/version: 8.0.0

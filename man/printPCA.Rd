@@ -35,4 +35,3 @@ colnames(codonCovMatrixTransp) <- rownames(codonCovMatrix)
 listPCACodonCoverage <- codonPCA(codonCovMatrixTransp,"codonCoverage")
 printPCA(listPCACodonCoverage[[2]])
 }
-
