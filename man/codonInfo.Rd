@@ -41,7 +41,7 @@ txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
 #get the names of the ORFs
 #grouped by transcript
 cds <- GenomicFeatures::cdsBy(txdb, use.names=TRUE)
-matches <- match(gsub("\\..*$", "", names(cds)), gsub("\\..*$", "", names(listReadsCodon)))
+matches <- match(gsub("[.].*$", "", names(cds)), gsub("[.].*$", "", names(listReadsCodon)))
 matched_idx <- which(!is.na(matches))
 orfCoord <- cds[matched_idx]
 names(orfCoord) <- names(listReadsCodon)[matches[matched_idx]]
