@@ -103,6 +103,9 @@ codonInfo <-
 
     #codonUsage <- ldply(codonUsage)
 
+    if (is.null(names(listReadsCodon))) {
+        names(listReadsCodon) <- as.character(seq_along(listReadsCodon))
+    }
     dataListReadsCodonID <- plyr::ldply(.data=listReadsCodon)
     # system.time(ldply(.data=listReadsCodon))
     # user  system elapsed
@@ -116,6 +119,15 @@ codonInfo <-
     # user  system elapsed
     # 139.369   0.016 139.255
 
+    if (is.null(names(codonTypeID))) {
+        if (!is.null(orfNames)) {
+            names(codonTypeID) <- orfNames
+        } else if (!is.null(names(cdsSeqs))) {
+            names(codonTypeID) <- names(cdsSeqs)
+        } else {
+            names(codonTypeID) <- as.character(seq_along(codonTypeID))
+        }
+    }
     codonTypeID <- plyr::ldply(codonTypeID)
     #   system.time(ldply(codonTypeID))
     #   user  system elapsed
@@ -123,6 +135,13 @@ codonInfo <-
     ### ???? also on codonTypeID paste every 3 codons in a cds
     ### ddply(codonTypeID, ".id", summarise, seq=unname(tapply(codon, (seq_along(codon)-1) %/% 3, paste,collapse="")))
     codonTypeID$codonID <- as.numeric(as.character(codonTypeID$codonID))
+
+    if (!(".id" %in% colnames(codonTypeID))) {
+        codonTypeID$.id <- NA
+    }
+    if (!(".id" %in% colnames(dataListReadsCodonID))) {
+        dataListReadsCodonID$.id <- NA
+    }
 
     #merging is much faster on data.table then with merge
     dtCodonTypeID <- data.table(codonTypeID, key=c(".id", "codonID"))
